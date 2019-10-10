@@ -7,6 +7,8 @@ app.config.from_pyfile('app.cfg')
 api = Api(app)
 db = SQLAlchemy(app)
 
+from app import views
+
 from resources.shorten import Shorten
 from resources.goto import Goto
 

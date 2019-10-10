@@ -5,6 +5,7 @@ from json import dumps
 from app import app, db
 from app.persist.models import Links
 
+
 class Shorten(Resource):
     def post(self):
         api_key = request.values.get('api_key', None)
@@ -12,12 +13,13 @@ class Shorten(Resource):
 
         if api_key in app.config['API_KEY_CSV'].split(','):
             if link:
-                new_link = Links.query.filter(Links.Link==link).first()
+                new_link = Links.query.filter(Links.Link == link).first()
                 if not new_link:
                     short_hash_len = app.config['SHORT_HASH_LEN_DEFAULT']
                     full_hash = sha1(link).hexdigest()
 
-                    while Links.query.filter(Links.Id==full_hash[:short_hash_len]).first():
+                    while Links.query.filter(Links.Id == full_hash[:short_hash_len]).first() and \
+                            full_hash[:short_hash_len] not in app.config['RESERVED_HASH_CSV'].split(','):
                         short_hash_len += 1
 
                     new_link = Links(full_hash[:short_hash_len], link, api_key)
