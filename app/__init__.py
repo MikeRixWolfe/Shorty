@@ -7,10 +7,10 @@ app.config.from_pyfile('app.cfg')
 api = Api(app)
 db = SQLAlchemy(app)
 
-from app import views
+from app.views import index
 
-from resources.shorten import Shorten
-from resources.goto import Goto
+from app.resources.shorten import Shorten
+from app.resources.goto import Goto
 
 api.add_resource(Shorten, '/')
 api.add_resource(Goto, '/<short_hash>')
