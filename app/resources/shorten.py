@@ -18,8 +18,8 @@ class Shorten(Resource):
                     short_hash_len = app.config['SHORT_HASH_LEN_DEFAULT']
                     full_hash = sha1(link).hexdigest()
 
-                    while Links.query.filter(Links.Id == full_hash[:short_hash_len]).first() and \
-                            full_hash[:short_hash_len] not in app.config['RESERVED_HASH_CSV'].split(','):
+                    while Links.query.filter(Links.Id == full_hash[:short_hash_len]).first() or \
+                            full_hash[:short_hash_len] in app.config['RESERVED_HASH_CSV'].split(','):
                         short_hash_len += 1
 
                     new_link = Links(full_hash[:short_hash_len], link, api_key)
